@@ -1,0 +1,50 @@
+/* 紧凑下拉菜单样式 */
+.compact-dropdown .ant-dropdown-menu-item {
+  padding: 4px 12px !important; /* 自定义内边距，如果要去掉所有边距，设为 0 */
+  margin: 0 !important;
+}
+
+.compact-dropdown .ant-dropdown-menu {
+  padding: 0 !important;
+  margin: 0 !important;
+  min-width: 100px; /* 根据需要调整宽度 */
+}
+
+/* 如果需要去掉菜单项之间的分割线（可选） */
+.compact-dropdown .ant-dropdown-menu-item-divider {
+  display: none;
+}
+
+/* 下拉菜单整体样式 */
+.compact-dropdown .ant-dropdown-menu {
+  padding: 8px 0 !important;                /* 菜单上下内边距 */
+  border-radius: 8px !important;            /* 可选圆角 */
+  box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08) !important; /* 阴影微调 */
+}
+
+/* 菜单项样式 */
+.compact-dropdown .ant-dropdown-menu-item {
+  padding: 8px 16px !important;             /* 增大点击区域 */
+  font-size: 14px !important;               /* 字体大小，可调整 */
+  line-height: 1.5 !important;               /* 行高 */
+  color: var(--text-color) !important;       /* 文字颜色随主题 */
+  transition: background-color 0.2s;
+}
+
+/* 菜单项悬浮效果 */
+.compact-dropdown .ant-dropdown-menu-item:hover {
+  background-color: var(--hover-bg, rgba(0, 0, 0, 0.06)) !important;
+}
+
+/* 选中项高亮 */
+.compact-dropdown .ant-dropdown-menu-item-selected {
+  background-color: var(--primary-light, #e6f7ff) !important;
+  color: var(--primary-color, #1890ff) !important;
+  font-weight: 500;
+}
+
+/* 可选：调整菜单项之间的分割线（如果有） */
+.compact-dropdown .ant-dropdown-menu-item-divider {
+  margin: 4px 0 !important;
+  background-color: var(--border-color, #f0f0f0) !important;
+}

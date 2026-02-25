@@ -42,7 +42,8 @@ console.log(res)
 }
 
 .header {
-  background: white;
+  background: var(--header-bg, #ffffff);
+  color: var(--text-color, #000000);
   
   /* 1. 粘性定位基础 */
   position: sticky;
@@ -71,7 +72,8 @@ console.log(res)
 }
 
 .footer {
-  background: #efefef;
+  background: var(--footer-bg, #ffffff);
+  color: var(--text-color, #000000);
   text-align: center;
   position: sticky;
   bottom: 0;

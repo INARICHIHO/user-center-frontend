@@ -4,7 +4,7 @@
       <a-col flex="200px">
         <div class="logo-title">
           <img src="@/assets/logo.svg" alt="logo" class="logo" />
-          <div class="title">稻荷用户中心</div>
+          <div class="title">{{ $t('appName') }}</div> <!-- 替换为翻译 -->
         </div>
       </a-col>
 
@@ -12,29 +12,34 @@
         <a-menu
           v-model:selectedKeys="current"
           mode="horizontal"
-          :items="items"
+          :items="menuItems"
           @click="doMenuClick"
           class="nav-menu"
         />
       </a-col>
-      <a-col flex="px">
+
+      <a-col flex="230px"> <!-- 为切换按钮留出足够宽度，可以用 flex 自适应 -->
         <div class="user-login-status">
-          <!-- 如果已登录，显示用户名下拉菜单 overlay负责接收dropdown的内容 -->
-          <a-dropdown v-if="userStore.userInfo" placement="bottomRight">
+          <!-- 语言切换下拉菜单 -->
+          <lang-selector />
+          <!-- 主题切换按钮 -->
+          <theme-selector />
+
+          <!-- 用户状态区域：已登录显示用户信息下拉，否则显示登录按钮 -->
+          <a-dropdown v-if="userStore.userInfo" placement="bottomCenter">
             <div class="user-info">
               <a-avatar :src="userStore.userInfo.avatar" style="margin-right: 8px;">
                 {{ userStore.userInfo.username.charAt(0).toUpperCase() }}
               </a-avatar>
               <span>{{ userStore.userInfo.username }}</span>
             </div>
-            <template #overlay> 
+            <template #overlay>
               <a-menu>
-                <a-menu-item @click="handleLogout">退出登录</a-menu-item>
+                <a-menu-item @click="handleLogout">{{ $t('logout') }}</a-menu-item> <!-- 翻译 -->
               </a-menu>
             </template>
           </a-dropdown>
-          <!-- 否则显示登录按钮 -->
-          <a-button v-else type="primary" @click="() => router.push('/user/login')">登录</a-button>
+          <a-button v-else type="primary" @click="() => router.push('/user/login')">{{ $t('login') }}</a-button>
         </div>
       </a-col>
     </a-row>
@@ -42,13 +47,17 @@
 </template>
 
 <script lang="ts" setup>
-import { h, ref } from 'vue';
+import { h, ref, computed } from 'vue';
 import { HomeOutlined, CrownOutlined } from '@ant-design/icons-vue';
 import type { MenuProps } from 'ant-design-vue';
 import { useRouter, useRoute } from 'vue-router';
-import { useUserStore } from '@/store/user';
+import { useUserStore } from '@/stores/user';
+import { useI18n } from 'vue-i18n';
 import { message } from 'ant-design-vue';
+import ThemeSelector from './icons/ThemeSelector.vue';
+import LangSelector from './icons/LangSelector.vue';
 
+const { t } = useI18n(); // 获取翻译函数，用于脚本中的翻译
 const router = useRouter();
 const route = useRoute();
 const userStore = useUserStore();
@@ -66,18 +75,18 @@ router.afterEach((to) => {
   current.value = [to.path];
 });
 
-// 菜单项配置
-const items = ref<MenuProps['items']>([
-  { key: '/', icon: () => h(HomeOutlined), label: '主页' },
-  { key: '/user/login', label: '用户登录' },
-  { key: '/user/register', label: '用户注册' },
-  { key: '/admin/userManage', icon: () => h(CrownOutlined), label: '用户管理' },
+// 菜单项配置（响应式，随语言变化）
+const menuItems = computed<MenuProps['items']>(() => [
+  { key: '/', icon: () => h(HomeOutlined), label: t('home') },
+  { key: '/user/login', label: t('login') },
+  { key: '/user/register', label: t('register') },
+  { key: '/admin/userManage', icon: () => h(CrownOutlined), label: t('userManage') },
   {
     key: 'others',
     label: h(
       'a',
       { href: 'https://space.bilibili.com/522470519', target: '_blank' },
-      '个人主页'
+      t('personalPage') // 外部链接也需要翻译
     ),
   },
 ]);
@@ -86,10 +95,10 @@ const items = ref<MenuProps['items']>([
 const handleLogout = async () => {
   const res = await userStore.logout();
   if (res.data?.code === 0) {
-    message.success('已退出');
+    message.success(t('logoutSuccess')); // 翻译
     router.push('/user/login');
   } else {
-    message.error(res.data?.message || '退出失败');
+    message.error(res.data?.message || t('logoutFailed')); // 翻译，可定义一个通用失败信息
   }
 };
 </script>
@@ -99,7 +108,7 @@ const handleLogout = async () => {
   width: 100%;
   max-width: 1200px;
   padding: 0 24px;
-  margin: 0 auto; /* 如果希望整体居中 */
+  margin: 0 auto;
 }
 
 .header-row {
@@ -131,6 +140,7 @@ const handleLogout = async () => {
   display: flex;
   justify-content: flex-end;
   align-items: center;
+  gap: 8px; /* 按钮之间的间距 */
 }
 
 .user-info {
@@ -138,4 +148,6 @@ const handleLogout = async () => {
   align-items: center;
   cursor: pointer;
 }
+
+
 </style>

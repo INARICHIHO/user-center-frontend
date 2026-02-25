@@ -1,0 +1,10 @@
+.theme-light {
+  --primary-color: #1890ff;
+  --bg-color: #ffffff;
+  --text-color: #000000;
+  --header-bg: #ffffff;
+  --content-bg: #f0f2f5;
+  --footer-bg: #efefef;
+  --border-color: #e8e8e8;
+    --hover-bg: rgba(0, 0, 0, 0.06);
+}
