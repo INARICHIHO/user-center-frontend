@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const myAxios = axios.create({
-  baseURL: 'http://localhost:8080',
+  baseURL: 'https://user-center-backend.onrender.com',
   timeout: 10000,
   withCredentials:true,//允许跨域请求携带 cookie（用于维持登录会话）。非常重要，因为登录态通常依赖 cookie。
 });
