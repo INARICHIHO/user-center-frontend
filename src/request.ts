@@ -39,4 +39,13 @@ myAxios.interceptors.response.use(function (response) {
     return Promise.reject(error);
   });
 
+  // 在创建 axios 实例后添加
+myAxios.interceptors.request.use(config => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  });
+
   export default myAxios;
